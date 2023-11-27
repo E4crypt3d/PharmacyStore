@@ -24,7 +24,7 @@ PharmacyStore is a web application designed to manage medicine sales for a pharm
   - Total amount of medicines in inventory.
   - Performance comparison to the previous month.
 
-- **Bokeh Charts:**
+- **Chart:**
 
   - Monthly sales representation using Bokeh charts.
 
