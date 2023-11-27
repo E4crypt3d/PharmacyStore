@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock title %} - Pharmacy Store
+    </title>
+
+    <!-- Tailwind is included -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}" />
+
+    <meta name="description" content="Admin One - free Tailwind dashboard">
+
+    <meta property="og:url" content="https://justboil.github.io/admin-one-tailwind/">
+    <meta property="og:site_name" content="JustBoil.me">
+    <meta property="og:title" content="Admin One HTML">
+    <meta property="og:description" content="Admin One - free Tailwind dashboard">
+    <meta property="og:image" content="https://justboil.me/images/one-tailwind/repository-preview-hi-res.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1920">
+    <meta property="og:image:height" content="960">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Admin One HTML">
+    <meta property="twitter:description" content="Admin One - free Tailwind dashboard">
+    <meta property="twitter:image:src" content="https://justboil.me/images/one-tailwind/repository-preview-hi-res.png">
+    <meta property="twitter:image:width" content="1920">
+    <meta property="twitter:image:height" content="960">
+
+
+</head>
+
+<body>
+    <nav id="navbar-main" class="navbar is-fixed-top">
+        <div class="navbar-brand">
+            <a class="navbar-item mobile-aside-button">
+                <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
+            </a>
+            <div class="navbar-item">
+                <form action="{% url 'sales' %}" method="get">
+                    <div class="control"><input placeholder="Search Sales..." name="q" class="input"></div>
+                </form>
+            </div>
+        </div>
+        <div class="navbar-brand is-right">
+            <a class="navbar-item --jb-navbar-menu-toggle" data-target="navbar-menu">
+                <span class="icon"><i class="mdi mdi-dots-vertical mdi-24px"></i></span>
+            </a>
+        </div>
+        <div class="navbar-menu" id="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item dropdown has-divider has-user-avatar">
+                    <a class="navbar-link">
+                        <div class="user-avatar">
+                            <img src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
+                                alt="{{user.last_name}} {{user.first_name}}" class="rounded-full">
+                        </div>
+                        <div class="is-user-name"><span>{{user.first_name}} {{user.last_name}}</span></div>
+                        <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
+                    </a>
+                    <div class="navbar-dropdown">
+                        {% if user.is_superuser %}
+                        <a class="navbar-item" href="{% url 'admin:index' %}" class="button light">
+                            <span class="icon"><span class="mdi mdi-shield-crown"></span></span>
+                            <span>Admin Panel</span></a>
+                        <hr class="navbar-divider">
+                        {% endif %}
+                        <a class="navbar-item" href="{% url 'logout' %}">
+                            <span class="icon"><i class="mdi mdi-logout"></i></span>
+                            <span>Log Out</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}" title="Log out" class="navbar-item desktop-icon-only">
+                    <span class="icon"><i class="mdi mdi-logout"></i></span>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <aside class="aside is-placed-left is-expanded">
+        <div class="aside-tools">
+            <div>
+                <a href="{% url 'home' %}">Pharmacy <b class="font-black">Store</b></a>
+            </div>
+        </div>
+        <div class="menu is-menu-main">
+            <p class="menu-label">General</p>
+            <ul class="menu-list">
+                <li class="
+                {% block dashboard %}
+                {% endblock dashboard %}
+                    ">
+                    <a href="{% url 'home' %}">
+                        <span class="icon"><span class="mdi mdi-view-dashboard"></span></span>
+                        <span class="menu-item-label">Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label">Sales Records</p>
+            <ul class="menu-list">
+                <li class="--set-active-tables-html 
+                {% block sales %}
+                    
+                {% endblock sales %}">
+                    <a href="{% url 'sales' %}">
+                        <span class="icon"><span class="mdi mdi-table-heart"></span></span>
+                        <span class="menu-item-label">Sales</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div id="app">
+        <section class="is-title-bar">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+                <ul>
+                    <li>Pharmacy</li>
+                    <li>
+                        {% block breadtitle %}
+
+                        {% endblock breadtitle %}
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        {% block content %}
+
+        {% endblock content %}
+
+        <footer class="footer">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
+                <div class="flex items-center justify-start space-x-3">
+                    <div>
+                        © 2023, Pharmacy Store
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts below are for demo only -->
+    <script type="text/javascript" src="{% static 'js/main.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/htmx.min.js' %}"></script>
+
+
+    <!-- Icons below are for demo only. Feel free to use any icon pack. Docs: https://bulma.io/documentation/elements/icon/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.3.67/css/materialdesignicons.min.css">
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.1.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.3.1.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.3.1.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.3.1.min.js"></script>
+    <script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.3.1.min.js"></script>
+
+</body>
+
+</html>

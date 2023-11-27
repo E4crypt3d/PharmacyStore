@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+
+{% block dashboard %}
+active
+{% endblock dashboard %}
+
+
+{% block title %}
+Dashboard
+{% endblock title %}
+
+{% block breadtitle %}
+Dashboard
+{% endblock breadtitle %}
+{% block content %}
+
+
+{% if notified %}
+<!-- NOTIFICATION AREA -->
+<div class="notification {{notified.0.notification_type}}">
+	<div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
+		<div>
+			<span class="icon"><i class="mdi mdi-buffer"></i></span>
+			<b>{{notified.0.notification_msg}}</b>
+		</div>
+		<button type="button" class="button small textual --jb-notification-dismiss">Dismiss</button>
+	</div>
+</div>
+<!-- NOTIFICATION AREA ENDS -->
+{% endif %}
+{{ script | safe }}
+<section class="is-hero-bar">
+	<div class="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+		<h1 class="title">
+			Dashboard
+		</h1>
+		<a href="{% url 'admin:store_sale_add' %}" class="button light">Add Sales</a>
+	</div>
+</section>
+
+<section class="section main-section">
+	<div class="grid gap-6 grid-cols-1 md:grid-cols-3 mb-6">
+		<div class="card">
+			<div class="card-content">
+				<div class="flex items-center justify-between">
+					<div class="widget-label">
+						<h3>
+							Products
+						</h3>
+						<h1>
+							{{products}}
+						</h1>
+					</div>
+					<span class="icon widget-icon text-green-500"><span
+							class="mdi mdi-medication mdi-48px"></span></span>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-content">
+				<div class="flex items-center justify-between">
+					<div class="widget-label">
+						<h3>
+							Sales
+						</h3>
+						<h1>
+							{{total_amount | intcomma}} PKR
+						</h1>
+					</div>
+					<span class="icon widget-icon text-blue-500"><i class="mdi mdi-cart-outline mdi-48px"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-content">
+				<div class="flex items-center justify-between">
+					<div class="widget-label">
+						<h3>
+							Performance
+						</h3>
+						<sub class="text-gray-500">This month performance against last month</sub>
+						<h1>
+							{{performance}}%
+						</h1>
+					</div>
+					<span class="icon widget-icon text-red-500"><i class="mdi mdi-finance mdi-48px"></i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card mb-6">
+		<header class="card-header">
+			<p class="card-header-title">
+				<span class="icon"><i class="mdi mdi-finance"></i></span>
+				Performance
+			</p>
+			<a href="{% url 'home' %}" class="card-header-icon">
+				<span class="icon"><i class="mdi mdi-reload"></i></span>
+			</a>
+		</header>
+		<div class="card-content">
+			<div class="chart-area">
+				<div class="h-full">
+					{{ div | safe }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="card has-table">
+		<header class="card-header">
+			<p class="card-header-title">
+				<span class="icon"><span class="mdi mdi-medication"></span></span>
+				Recently Added Products
+			</p>
+			<a href="{% url 'home' %}" class="card-header-icon">
+				<span class="icon"><i class="mdi mdi-reload">
+					</i></span>
+			</a>
+		</header>
+
+		{% if sales %}
+		<div class="card-content">
+			<!-- SALES TABLE -->
+			<table>
+				<thead>
+					<tr>
+						<th>No</th>
+						<th>Product</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Total Amount</th>
+						<th>User</th>
+						<th>Created</th>
+						<th>Modified</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for sale in sales %}
+					<tr>
+						<td data-label="Product">{{forloop.counter}}</td>
+						<td data-label="Product">{{sale.product}}</td>
+						<td data-label="Price">{{sale.price}}</td>
+						<td data-label="Quantity">{{sale.quantity}}</td>
+						<td data-label="Total Amount">{{sale.total_amount}}</td>
+						<td data-label="User">{{sale.user}}</td>
+						<td data-label="Created">
+							<small class="text-gray-500" title="{{sale.added_at}}">{{sale.added_at | timesince}}</small>
+						</td>
+						<td data-label="Created">
+							<small class="text-gray-500" title="Oct 25, 2021">{{sale.modified_at | timesince}}</small>
+						</td>
+						<td class="actions-cell">
+							<div class="buttons right nowrap">
+								<a href="{% url 'admin:store_sale_change' sale.id %}" class="button small green"
+									type="button">
+									<span class="icon"><i class="mdi mdi-eye"></i></span>
+								</a>
+								{% if user.is_superuser %}
+								<a href="{% url 'admin:store_sale_delete' sale.id %}" class="button small red"
+									type="button">
+									<span class="icon"><i class="mdi mdi-trash-can"></i></span>
+								</a>
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<!-- SALES TABLE END -->
+		</div>
+		{% else %}
+		<div class="card empty">
+			<div class="card-content">
+				<div>
+					<span class="icon large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span>
+				</div>
+				<p>Nothing's here…</p>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</section>
+
+{% endblock content %}

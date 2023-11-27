@@ -1,0 +1,103 @@
+{% load humanize %}
+<div class="card has-table">
+    <header class="card-header">
+        <p class="card-header-title">
+            <span class="icon"><span class="mdi mdi-medication"></span></span>
+            {{sales_count}} Sales Records
+        </p>
+        <a href="{% url 'sales' %}" class="card-header-icon">
+            <span class="icon"><i class="mdi mdi-reload"></i></span>
+        </a>
+    </header>
+
+    {% if sales %}
+    <div class="card-content">
+        <!-- SALES TABLE -->
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th hx-get="{% url 'sort' %}?o=0&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Product</th>
+                    <th hx-get="{% url 'sort' %}?o=1&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Price</th>
+                    <th hx-get="{% url 'sort' %}?o=2&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Quantity</th>
+                    <th hx-get="{% url 'sort' %}?o=3&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Total Amount</th>
+                    <th hx-get="{% url 'sort' %}?o=4&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">User</th>
+                    <th hx-get="{% url 'sort' %}?o=5&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Created</th>
+                    <th hx-get="{% url 'sort' %}?o=6&amp;page={{ request.GET.page }}" hx-target="#sales"
+                        style="cursor: pointer;">Modified</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                <tr>
+                    <td class="image-cell">
+                        <div class="image">
+                            <img src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg" class="rounded-full">
+                        </div>
+                    </td>
+                    <td data-label="Product">{{sale.product}}</td>
+                    <td data-label="Price">{{sale.price |intcomma }}</td>
+                    <td data-label="Quantity">{{sale.quantity}}</td>
+                    <td data-label="Total Amount">{{sale.total_amount | intcomma}}</td>
+                    <td data-label="User">{{sale.user}}</td>
+                    <td data-label="Created">
+                        <small class="text-gray-500"
+                            title="{{sale.added_at}}">{{sale.added_at | date:"Y-m-d h:i A"}}</small>
+                    </td>
+                    <td data-label="Created">
+                        <small class="text-gray-500" title="Oct 25, 2021">{{sale.modified_at | timesince}}</small>
+                    </td>
+                    <td class="actions-cell">
+                        <div class="buttons right nowrap">
+                            <a href="{% url 'admin:store_sale_change' sale.id %}" class="button small green"
+                                type="button">
+                                <span class="icon"><i class="mdi mdi-eye"></i></span>
+                            </a>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'admin:store_sale_delete' sale.id %}" class="button small red"
+                                type="button">
+                                <span class="icon"><i class="mdi mdi-trash-can"></i></span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- SALES TABLE END -->
+        <div class="table-pagination">
+            <div class="flex items-center justify-between">
+                <div class="buttons">
+
+                    {% for page in sales.paginator.page_range %}
+
+                    {% if page == sales.number %}
+                    <a href="?page={{page}}" type="button" class="button active">{{page}}</a>
+                    {% else %}
+                    <a href="?page={{page}}" type="button" class="button">{{page}}</a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <small>Page {{sales.number}} of {{sales.paginator.num_pages }}</small>
+            </div>
+        </div>
+        {% else %}
+        <div class="card empty">
+            <div class="card-content">
+                <div>
+                    <span class="icon large"><i class="mdi mdi-emoticon-sad mdi-48px"></i></span>
+                </div>
+                <p>Nothing's here…</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
