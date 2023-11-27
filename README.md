@@ -16,12 +16,14 @@ PharmacyStore is a web application designed to manage medicine sales for a pharm
 
 - **User Management:**
 
+  - Admins have the ability to create user accounts and assign staff roles.
   - Admins can promote staff members to admin status.
 
 - **Sales Analytics:**
 
   - Total amount of medicine sales.
   - Total amount of medicines in inventory.
+  - Total Sales Amount
   - Performance comparison to the previous month.
 
 - **Chart:**
