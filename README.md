@@ -72,7 +72,9 @@ python manage.py runserver --insecure
 ## Usage
 
 1. Access the application at http://localhost:3000.
-2. Sign in with your credentials.
+2. Sign in with Default credentials.
+   - USERNAME : `admin`
+   - PASSWORD : `admin`
 3. Admins can manage sales, users, and roles.
 4. Staff members can add sales.
 5. Explore the sales analytics, including total sales, total medicines, and performance comparison.
