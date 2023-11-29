@@ -78,7 +78,6 @@ def home(request):
                    'performance': int(performance)}
         return render(request, 'index.html', context)
     except Exception as e:
-        raise e
         return HttpResponseNotFound()
 
 
