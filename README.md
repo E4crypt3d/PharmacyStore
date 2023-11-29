@@ -55,11 +55,19 @@ PharmacyStore is a web application designed to manage medicine sales for a pharm
 
 4. Run the application:
 
-   ```bash
-   python manage.py runserver
-   ```
+- with `DEBUG=True`
 
-   - The application should be running at `http://localhost:3000`.
+```bash
+python manage.py runserver
+```
+
+- with `DEBUG=False`
+
+```bash
+python manage.py runserver --insecure
+```
+
+- The application should be running at `http://localhost:3000`.
 
 ## Usage
 
