@@ -20,11 +20,11 @@ Dashboard
 
 {% if notified %}
 <!-- NOTIFICATION AREA -->
-<div class="notification {{notified.0.notification_type}}">
+<div class="notification {{notified.notification_type}}">
 	<div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
 		<div>
 			<span class="icon"><i class="mdi mdi-buffer"></i></span>
-			<b>{{notified.0.notification_msg}}</b>
+			<b>{{notified.notification_msg}}</b>
 		</div>
 		<button type="button" class="button small textual --jb-notification-dismiss">Dismiss</button>
 	</div>

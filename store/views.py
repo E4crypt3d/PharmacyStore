@@ -69,7 +69,7 @@ def home(request):
         total_amount = sum([i.total_amount for i in sales])
         total_products = sales.values('product').distinct().count
         recent_sales = sales.order_by('-added_at')[:10]
-        notified_notifications = Notification.notified.all()
+        notified_notifications = Notification.notified.all().first()
         context = {'products': total_products,
                    'total_amount': total_amount,
                    'sales': recent_sales,
@@ -98,7 +98,7 @@ def sales(request):
             else:
                 sales = Sale.objects.select_related('user').all()
             sales_count = sales.count()
-        notified = Notification.notified.all()
+        notified = Notification.notified.all().first()
         paginated_sales = Paginator(sales, 20)
         page_obj = paginated_sales.get_page(page_number)
         context = {'sales': page_obj,

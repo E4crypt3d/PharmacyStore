@@ -18,11 +18,11 @@ Sales
 
 {% if notified %}
 <!-- NOTIFICATION AREA -->
-<div class="notification {{notified.0.notification_type}}">
+<div class="notification {{notified.notification_type}}">
   <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0">
     <div>
       <span class="icon"><i class="mdi mdi-buffer"></i></span>
-      <b>{{notified.0.notification_msg}}</b>
+      <b>{{notified.notification_msg}}</b>
     </div>
     <button type="button" class="button small textual --jb-notification-dismiss">Dismiss</button>
   </div>
@@ -78,11 +78,7 @@ Sales
         <tbody>
           {% for sale in sales %}
           <tr>
-            <td class="image-cell">
-              <div class="image">
-                <img src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg" class="rounded-full">
-              </div>
-            </td>
+            <td></td>
             <td data-label="Product">{{sale.product}}</td>
             <td data-label="Price">{{sale.price |intcomma }}</td>
             <td data-label="Quantity">{{sale.quantity}}</td>
