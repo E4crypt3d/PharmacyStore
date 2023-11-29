@@ -28,25 +28,23 @@ def home(request):
 
         sales_data = Sale.objects.filter(added_at__year=current_year).values(
             'added_at__month').annotate(total_sales=Sum('total_amount'))
-        sales_dict = []
-        for i in range(1, current_month+1):
-            a = sales_data.filter(added_at__month=i)
-            if a.exists():
-                sales_dict.append(a[0])
-            else:
-                sales_dict.append({"added_at__month": i, "total_sales": 0})
-            i += 1
-
+        sales_dict = {i: {"added_at__month": i, "total_sales": 0}
+                      for i in range(1, current_month + 1)}
+        for entry in sales_data:
+            month = entry['added_at__month']
+            sales_dict[month] = {"added_at__month": month,
+                                 "total_sales": entry['total_sales']}
         # Finding the avg of current and previous month and comparing their performances
-        cmonth = sales_dict[-1]['total_sales']
-        pmonth = sales_dict[-2]['total_sales']
+        cmonth = sales_dict[current_month]['total_sales']
+        pmonth = sales_dict[current_month-1]['total_sales']
         cmonth_percent = cmonth / (cmonth + pmonth) * 100
         pmonth_percent = pmonth / (pmonth + cmonth) * 100
         performance = cmonth_percent - pmonth_percent
 
-        months = [calendar.month_name[entry['added_at__month']]
+        months = [calendar.month_name[sales_dict[entry]['added_at__month']]
                   for entry in sales_dict]
-        total_sales_amounts = [entry['total_sales'] for entry in sales_dict]
+        total_sales_amounts = [sales_dict[entry]
+                               ['total_sales'] for entry in sales_dict]
 
         p = figure(x_range=[str(month) for month in months], title=f'Sales Amount in {current_year} by Month',
                    toolbar_location=None, tools="", sizing_mode='stretch_width')
@@ -80,6 +78,7 @@ def home(request):
                    'performance': int(performance)}
         return render(request, 'index.html', context)
     except Exception as e:
+        raise e
         return HttpResponseNotFound()
 
 
